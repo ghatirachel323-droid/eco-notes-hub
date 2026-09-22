@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ECO Notes Hub | Your Academic Companion</title>
+
+    <!-- Creative Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase client (auth + database + file storage) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <!-- ================= BACKGROUND ================= -->
+
+    <div class="background-slider">
+        <div class="bg-slide active"></div>
+        <div class="bg-slide"></div>
+        <div class="bg-slide"></div>
+        <div class="bg-slide"></div>
+    </div>
+
+    <div class="background-overlay"></div>
+
+
+    <!-- ================= HOME PAGE ================= -->
+
+    <section id="screen-home" class="screen active">
+
+        <div class="home-content">
+
+            <div class="glass-home-card">
+
+                <img src="images/ku-logo.jpg"
+                     alt="Kenyatta University Logo"
+                     class="home-logo">
+
+                <p class="small-heading">WELCOME TO</p>
+
+                <h1>ECO NOTES HUB</h1>
+
+                <p class="tagline">
+                    Your Academic Companion
+                </p>
+
+                <p class="home-description">
+                    A simple academic platform designed to help students
+                    access notes, past papers and revision materials.
+                </p>
+
+                <button class="explore-btn"
+                        onclick="showScreen('screen-login')">
+                    Explore Notes
+                    <span>→</span>
+                </button>
+
+                <div class="contact-info">
+
+                    <div>
+                        <span>📞</span>
+                        <p>0794055454</p>
+                    </div>
+
+                    <div>
+                        <span>✉️</span>
+                        <p>ecohubadmin@gmail.com</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= LOGIN PAGE ================= -->
+
+    <section id="screen-login" class="screen">
+
+        <div class="login-wrapper">
+
+            <div class="login-card">
+
+                <button class="back-button"
+                        onclick="showScreen('screen-home')">
+                    ← Back
+                </button>
+
+                <div class="login-logo-section">
+
+                    <img src="images/ku-logo.jpg"
+                         class="login-logo"
+                         alt="KU Logo">
+
+                    <h2>ECO NOTES HUB</h2>
+
+                </div>
+
+                <!-- LOGIN VIEW -->
+                <div id="login-view">
+
+                    <h3>Welcome 🤗</h3>
+                    <p class="login-text">
+                        Sign in to access your academic materials.
+                    </p>
+
+                    <form id="login-form">
+
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="user-email" placeholder="Enter your email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="user-password" placeholder="Enter your password" required>
+                        </div>
+
+                        <div id="login-error" class="form-error hidden"></div>
+
+                        <button type="submit" class="login-btn" id="login-submit-btn">
+                            Login to Continue →
+                        </button>
+
+                    </form>
+
+                    <p class="switch-link">
+                        Don't have access yet?
+                        <a href="#" onclick="toggleAuthView('request'); return false;">Request access</a>
+                    </p>
+
+                </div>
+
+                <!-- REQUEST ACCESS VIEW -->
+                <div id="request-view" class="hidden">
+
+                    <h3>Request Access 📩</h3>
+                    <p class="login-text">
+                        Enter your details. The admin will review your request and email you a password.
+                    </p>
+
+                    <form id="request-form">
+
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="request-name" placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="request-email" placeholder="Enter your email" required>
+                        </div>
+
+                        <div id="request-status" class="form-error hidden"></div>
+
+                        <button type="submit" class="login-btn" id="request-submit-btn">
+                            Submit Request →
+                        </button>
+
+                    </form>
+
+                    <p class="switch-link">
+                        Already have a password?
+                        <a href="#" onclick="toggleAuthView('login'); return false;">Back to login</a>
+                    </p>
+
+                </div>
+
+                <p class="login-footer">
+                    ECO Notes Hub • Learn • Revise • Excel
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= STUDENT DASHBOARD ================= -->
+
+    <section id="screen-student" class="screen dashboard-screen">
+
+        <div class="dashboard">
+
+            <header class="dashboard-header">
+
+                <div class="brand">
+                    <img src="images/ku-logo.jpg" alt="KU Logo">
+                    <div>
+                        <h2>ECO NOTES HUB</h2>
+                        <p>Student Learning Portal</p>
+                    </div>
+                </div>
+
+                <div class="user-area">
+                    <div class="user-avatar" id="student-avatar">S</div>
+                    <div>
+                        <strong id="student-email-display">Student</strong>
+                        <p>Student</p>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+
+            </header>
+
+            <div id="breadcrumbs" class="breadcrumbs"></div>
+
+            <div id="courses-section">
+                <div class="section-title">
+                    <span>📚</span>
+                    <div>
+                        <h2>Select Your Program</h2>
+                        <p>Choose the program you are currently studying.</p>
+                    </div>
+                </div>
+
+                <div class="card-grid">
+                    <div class="selection-card" onclick="selectCourse('K14 Economics')">
+                        <div class="card-icon">📊</div>
+                        <h3>K14</h3>
+                        <p>Economics</p>
+                        <span>Select →</span>
+                    </div>
+
+                    <div class="selection-card" onclick="selectCourse('K16 Economics and Finance')">
+                        <div class="card-icon">💰</div>
+                        <h3>K16</h3>
+                        <p>Economics & Finance</p>
+                        <span>Select →</span>
+                    </div>
+
+                    <div class="selection-card" onclick="selectCourse('K24 Economics and Statistics')">
+                        <div class="card-icon">📈</div>
+                        <h3>K24</h3>
+                        <p>Economics & Statistics</p>
+                        <span>Select →</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="years-section" class="hidden">
+                <div class="section-title">
+                    <span>🎓</span>
+                    <div>
+                        <h2>Select Your Academic Year</h2>
+                        <p>Choose your current year of study.</p>
+                    </div>
+                </div>
+
+                <div class="card-grid year-grid">
+                    <div class="selection-card" onclick="selectYear('1st Year')">
+                        <div class="year-number">01</div><h3>1st Year</h3>
+                    </div>
+                    <div class="selection-card" onclick="selectYear('2nd Year')">
+                        <div class="year-number">02</div><h3>2nd Year</h3>
+                    </div>
+                    <div class="selection-card" onclick="selectYear('3rd Year')">
+                        <div class="year-number">03</div><h3>3rd Year</h3>
+                    </div>
+                    <div class="selection-card" onclick="selectYear('4th Year')">
+                        <div class="year-number">04</div><h3>4th Year</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div id="categories-section" class="hidden">
+                <div class="section-title">
+                    <span>📂</span>
+                    <div>
+                        <h2>Choose Learning Materials</h2>
+                        <p>What would you like to access?</p>
+                    </div>
+                </div>
+
+                <div class="card-grid">
+                    <div class="selection-card" onclick="selectCategory('Notes')">
+                        <div class="card-icon">📝</div>
+                        <h3>Notes</h3>
+                        <p>Course notes and study materials</p>
+                    </div>
+                    <div class="selection-card" onclick="selectCategory('Past Papers')">
+                        <div class="card-icon">📄</div>
+                        <h3>Past Papers</h3>
+                        <p>Previous examinations</p>
+                    </div>
+                    <div class="selection-card" onclick="selectCategory('Revision Materials')">
+                        <div class="card-icon">🧠</div>
+                        <h3>Revision Materials</h3>
+                        <p>Guides, summaries and revision papers</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="materials-section" class="hidden">
+                <div class="section-title">
+                    <span>📚</span>
+                    <div>
+                        <h2 id="materials-title">Available Materials</h2>
+                        <p>Click View to open the material.</p>
+                    </div>
+                </div>
+
+                <div id="materials-container" class="materials-list"></div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ADMIN DASHBOARD ================= -->
+
+    <section id="screen-admin" class="screen dashboard-screen">
+
+        <div class="dashboard admin-dashboard">
+
+            <header class="dashboard-header">
+                <div class="brand">
+                    <img src="images/ku-logo.jpg" alt="KU Logo">
+                    <div>
+                        <h2>KU NOTES HUB</h2>
+                        <p>Administrator Dashboard</p>
+                    </div>
+                </div>
+
+                <div class="user-area">
+                    <div class="user-avatar admin-avatar">A</div>
+                    <div>
+                        <strong id="admin-email-display">Administrator</strong>
+                        <p>Owner & Mentor</p>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </header>
+
+            <div class="admin-welcome">
+                <div>
+                    <p class="small-heading">ADMINISTRATION PANEL</p>
+                    <h1>Manage Your Academic Community 👩🏽‍💻</h1>
+                    <p>Upload learning materials, approve students and manage your KU Notes Hub platform.</p>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span>⏳</span>
+                    <div>
+                        <h3 id="total-pending">0</h3>
+                        <p>Pending Requests</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span>👥</span>
+                    <div>
+                        <h3 id="total-users">0</h3>
+                        <p>Approved Students</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span>📚</span>
+                    <div>
+                        <h3 id="total-materials">0</h3>
+                        <p>Learning Materials</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PENDING ACCESS REQUESTS -->
+            <div class="admin-card">
+                <h2>⏳ Pending Access Requests</h2>
+                <p class="admin-description">
+                    Set a password for each student, then approve — they'll be emailed their login automatically.
+                </p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Set Password</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="requests-table"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- UPLOAD MATERIAL -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <div>
+                        <h2>📤 Upload Learning Material</h2>
+                        <p>Add notes, past papers or revision materials for students.</p>
+                    </div>
+                </div>
+
+                <form id="upload-form" class="upload-form">
+
+                    <input type="text" id="material-title" placeholder="Material Title" required>
+
+                    <select id="material-course">
+                        <option value="K14 Economics">K14 Economics</option>
+                        <option value="K16 Economics and Finance">K16 Economics & Finance</option>
+                        <option value="K24 Economics and Statistics">K24 Economics & Statistics</option>
+                    </select>
+
+                    <select id="material-year">
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                    </select>
+
+                    <select id="material-category">
+                        <option value="Notes">Notes</option>
+                        <option value="Past Papers">Past Papers</option>
+                        <option value="Revision Materials">Revision Materials</option>
+                    </select>
+
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="material-file" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt" required>
+                    </div>
+
+                    <button type="submit" class="upload-btn" id="upload-submit-btn">
+                        Upload Material 📤
+                    </button>
+
+                </form>
+            </div>
+
+            <!-- MATERIAL MANAGEMENT -->
+            <div class="admin-card">
+                <h2>📚 Uploaded Materials</h2>
+                <p class="admin-description">View or remove learning materials.</p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Program</th>
+                                <th>Year</th>
+                                <th>Category</th>
+                                <th>View</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-materials-table"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Fill these in before deploying — see SETUP.md -->
+    <script>
+        const SUPABASE_URL = "https://bxoxpgmielrgpqaajdnj.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_Cvi74FbWpoXr0QJnLbKA6w_jkOkssPG";
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
