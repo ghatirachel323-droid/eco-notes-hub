@@ -107,7 +107,7 @@ async function routeAfterLogin(user) {
         .eq("id", user.id)
         .single();
 
-    console.log("PROFILE DEBUG:", profile, error);
+    
 
     if (profile && profile.role === "admin") {
         document.getElementById("admin-email-display").textContent = user.email;
