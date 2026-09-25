@@ -131,14 +131,15 @@ document.getElementById("request-form").addEventListener("submit", async functio
 
     const name = document.getElementById("request-name").value.trim();
     const email = document.getElementById("request-email").value.trim();
+    const phone = document.getElementById("request-phone").value.trim();
     const btn = document.getElementById("request-submit-btn");
-
+   
     btn.disabled = true;
     btn.textContent = "Submitting...";
 
     const { error } = await supabaseClient
         .from("access_requests")
-        .insert({ name, email });
+        .insert({ name, email, phone });
 
     btn.disabled = false;
     btn.textContent = "Submit Request →";
@@ -376,21 +377,24 @@ async function renderPendingRequests() {
         return;
     }
 
-    table.innerHTML = requests.map(r => `
-        <tr>
-            <td>${escapeHtml(r.name)}</td>
-            <td>${escapeHtml(r.email)}</td>
-            <td>
-                <input type="text" class="request-password-input"
-                       id="pwd-${r.id}" placeholder="min 8 characters">
-            </td>
-            <td>
-                <button class="approve-btn" onclick="approveRequest('${r.id}')">
-                    Approve & Send
-                </button>
-            </td>
-        </tr>
-    `).join("");
+    
+        table.innerHTML = requests.map(r => `
+    <tr>
+        <td>${escapeHtml(r.name)}</td>
+        <td>${escapeHtml(r.email)}</td>
+        <td>${escapeHtml(r.phone || "—")}</td>
+        <td>
+            <input type="text" class="request-password-input"
+                   id="pwd-${r.id}" placeholder="min 8 characters">
+        </td>
+        <td>
+            <button class="approve-btn" onclick="approveRequest('${r.id}')">
+                Approve & Send
+            </button>
+        </td>
+    </tr>
+`).join("");
+    
 }
 
 async function approveRequest(requestId) {
