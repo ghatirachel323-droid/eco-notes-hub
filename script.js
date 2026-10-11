@@ -153,7 +153,7 @@ document.getElementById("request-form").addEventListener("submit", async functio
     }
 
     document.getElementById("request-form").reset();
-    showMessage("request-status", "Request submitted! You'll receive an email once approved. Check your Spam/Junk folder if you don't see it in your inbox.", "Success");
+    showMessage("request-status", "Request submitted! You'll receive an email once approved.", "Success");
 });
 
 
